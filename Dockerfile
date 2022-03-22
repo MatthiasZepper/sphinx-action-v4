@@ -1,4 +1,4 @@
-FROM sphinxdoc/sphinx-pdflatex
+FROM sphinxdoc/sphinx-latexpdf:latest
 
 LABEL "maintainer"="Ammar Askar <ammar@ammaraskar.com>"
 
