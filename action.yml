@@ -35,10 +35,10 @@ inputs:
   container:
     description:
       Run the build in the named container. Must be one of
-      'pdflatex', or 'default'.
+      'pdflatex', or 'latest'.
     required: false
     default: 'default'
 runs:
   using: docker
-  image: Dockerfile
+  image: ${{ format('Dockerfile.{0}', inputs.container) }}
 
