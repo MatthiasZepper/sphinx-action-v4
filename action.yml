@@ -39,6 +39,6 @@ inputs:
     required: false
     default: 'default'
 runs:
-  using: 'docker'
-  image: ${{ format('Dockerfile.{0}', inputs.container) }}
+  using: docker
+  image: Dockerfile
 
