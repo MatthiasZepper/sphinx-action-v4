@@ -1,12 +1,12 @@
-# Sphinx Build Action
+# Sphinx Build Action modification
 
-[![Build Status](https://travis-ci.org/ammaraskar/sphinx-action.svg?branch=master)](https://travis-ci.org/ammaraskar/sphinx-action)
-[![Test Coverage](https://codecov.io/gh/ammaraskar/sphinx-action/branch/master/graph/badge.svg)](https://codecov.io/gh/ammaraskar/sphinx-action)
+This is a derivative of a Github action built by [@ammaraskar](https://github.com/ammaraskar) and originally published at [ammaraskar/sphinx-action](https://github.com/ammaraskar/sphinx-action). Because the original action is [unfortunately outdated](https://github.com/ammaraskar/sphinx-action/pull/21), has unresolved issues with [LaTeX builds](https://github.com/ammaraskar/sphinx-action/issues/32) and seems to be somewhat unmaintained in general, I forked a patched version by [ferdnyc](https://github.com/ammaraskar/sphinx-action/pull/39) and did some minor tweaks to make it run with our project. 
 
-
-This is a Github action that looks for Sphinx documentation folders in your
+The action looks for Sphinx documentation folders in your
 project. It builds the documentation using Sphinx and any errors in the build
 process are bubbled up as Github status checks.
+
+An updated Github action derived from  . It uses customisations from @ferdnyc in combinations with own tweaks. 
 
 The main purposes of this action are:
 
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - uses: ammaraskar/sphinx-action@master
+    - uses: matthiaszepper/sphinx-action@latest
       with:
         docs-folder: "docs/"
 ```
@@ -42,9 +42,6 @@ folder.
 
 * If you have multiple sphinx documentation folders, please use multiple
   `uses` blocks.
-
-For a full example repo using this action including advanced usage, take a look
-at https://github.com/ammaraskar/sphinx-action-test
 
 ## Great Actions to Pair With
 
@@ -61,37 +58,6 @@ You can use these to make built HTML and PDFs available as artifacts:
         path: docs/_build/html/
 ```
 
-Or to push docs changes automatically to a `gh-pages` branch:
-
-<details><summary>Code for your workflow</summary>
-<p>
-
-```yaml
-    - name: Commit documentation changes
-      run: |
-        git clone https://github.com/ammaraskar/sphinx-action-test.git --branch gh-pages --single-branch gh-pages
-        cp -r docs/_build/html/* gh-pages/
-        cd gh-pages
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add .
-        git commit -m "Update documentation" -a || true
-        # The above command will fail if no changes were present, so we ignore
-        # the return code.
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        branch: gh-pages
-        directory: gh-pages
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-```
-
-</p>
-</details>
-
-For a full fledged example of this in action take a look at:
-https://github.com/ammaraskar/sphinx-action-test
-
 ## Advanced Usage
 
 If you wish to customize the command used to build the docs (defaults to
@@ -99,7 +65,7 @@ If you wish to customize the command used to build the docs (defaults to
 example, to invoke sphinx-build directly you can use:
 
 ```yaml
-    - uses: ammaraskar/sphinx-action@master
+    - uses: matthiaszepper/sphinx-action@latest
       with:
         docs-folder: "docs/"
         build-command: "sphinx-build -b html . _build"
@@ -109,19 +75,8 @@ If there's system level dependencies that need to be installed for your
 build, you can use the `pre-build-command` argument like so:
 
 ```yaml
-    - uses: ammaraskar/sphinx-action@master
+    - uses:  matthiaszepper/sphinx-action@pdflatex
       with:
-        docs-folder: "docs2/"
-        pre-build-command: "apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended"
+        docs-folder: "docs/"
         build-command: "make latexpdf"
 ```
-
-## Running the tests
-
-`python -m unittest`
-
-## Formatting
-
-Please use [black](https://github.com/psf/black) for formatting:
-
-`black entrypoint.py sphinx_action tests`
